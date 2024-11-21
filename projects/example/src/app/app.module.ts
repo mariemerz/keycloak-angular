@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
@@ -25,12 +25,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, KeycloakAngularModule],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService]
-    }
+    provideAppInitializer((initializeKeycloak)(inject(KeycloakService)))
   ],
   bootstrap: [AppComponent]
 })
